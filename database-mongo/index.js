@@ -11,21 +11,24 @@ db.once('open', function() {
   console.log('mongoose connected successfully');
 });
 
-var itemSchema = mongoose.Schema({
+var pictureSchema = mongoose.Schema({
   quantity: Number,
   description: String
 });
 
-var Item = mongoose.model('Item', itemSchema);
+var Picture = mongoose.model('Picture', pictureSchema);
 
 var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
+  Picture.find({}, function(err, pics) {
     if(err) {
       callback(err, null);
     } else {
-      callback(null, items);
+      callback(null, pics);
     }
   });
 };
 
-module.exports.selectAll = selectAll;
+module.exports = {
+  Picture: Picture,
+  selectAll: selectAll
+}

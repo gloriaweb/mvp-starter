@@ -1,4 +1,4 @@
-# Project Name #
+# Mozaik #
 
 <!-- 
 > This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
@@ -17,28 +17,28 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > Make beautiful mosaics instantly
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > Use the Unsplash API to create amazing mosaics for your website or mobile/computer desktop
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > Unsplash has the best free pictures on the internet, your phone doesn't. With Mozaik you can easily create inspiring wallpapers for your browser, computer, or smart phone.
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > High quality images that are also beautifully inspiring are hard to come by. Making them into something you can take with you is even more time consuming.
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
+  > With Mozaik you type in a keyword and get back beautiful images in a mosaic for you to use.
 
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > Many artists use inspiration walls in their workflow, why not businesses, too?
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > Visit Mozaik's website and enter a search term, get back beautiful mosaics.
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "When I'm creating or working through a difficult problem I always load up Mozaik to give me inspiration. It's a great positivity booster for me."
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > We spend 80% of our lives staring at screens, a lot of time absorbing moods and emotions from what we see. Use Mozaik to boost your mood, emotions, and outlook on life.

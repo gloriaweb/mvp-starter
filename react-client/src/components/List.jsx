@@ -1,11 +1,11 @@
 import React from 'react';
-import ListItem from './ListItem.jsx';
+import ListPic from './ListPic.jsx';
 
 const List = (props) => (
   <div>
     <h4> List Component </h4>
-    There are { props.items.length } items.
-    { props.items.map(item => <ListItem item={item}/>)}
+    There are { props.pics.length } items.
+    { props.pics.map(pics => <ListPic pics={pics}/>)}
   </div>
 )
 

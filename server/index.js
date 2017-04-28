@@ -1,19 +1,45 @@
+var Promise = require('bluebird');
 var express = require('express');
 var bodyParser = require('body-parser');
-// UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-// var items = require('../database-mysql');
-// var items = require('../database-mongo');
+var helper = require('../worker/index.js');
+var worker = new helper();
+// var db = require('../database-mongo');
 
 var app = express();
 
-// UNCOMMENT FOR REACT
+app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(bodyParser.json())
+
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-// UNCOMMENT FOR ANGULAR
-// app.use(express.static(__dirname + '/../angular-client'));
-// app.use(express.static(__dirname + '/../node_modules'));
+// on load make mosaic of random pictures
 
-app.get('/items', function (req, res) {
+// app.get('/random', function (req, res) {
+//   items.selectAll(function(err, data) {
+//     if(err) {
+//       res.sendStatus(500);
+//     } else {
+//       res.json(data);
+//     }
+//   });
+// });
+
+// on search send post request to unsplash api for pictures based on query
+// store picture objects in database
+
+app.post('/query', function (req, res) {
+  var query = req.body.query;
+  console.log('hey from query server', query);
+  Promise.resolve(worker.getPicturesFromApi(query))
+    .then((data) => {
+      res.end();
+    });
+});
+
+// on get mosaic, query database for most recent query and serve to client
+
+app.get('/mosaic', function (req, res) {
   items.selectAll(function(err, data) {
     if(err) {
       res.sendStatus(500);
