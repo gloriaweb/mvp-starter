@@ -11,10 +11,11 @@ class App extends React.Component {
       pics: []
     }
     this.search = this.search.bind(this);
+    this.loadMosaic = this.loadMosaic.bind(this);
   }
 
   componentDidMount() {
-    
+
   }
 
   // loadRandom() {
@@ -49,23 +50,27 @@ class App extends React.Component {
     })
     .then(() => {
       console.log(this.state.pics);
+      this.loadMosaic(query);
     })
 
   }
 
-  // loadMosaic() {
-  //   $.ajax({
-  //     url: '/mosaic', 
-  //     success: (data) => {
-  //       this.setState({
-  //         pics: data
-  //       })
-  //     },
-  //     error: (err) => {
-  //       console.log('err', err);
-  //     }
-  //   });
-  // }
+  loadMosaic(query) {
+    $.ajax({
+      method: 'get',
+      url: '/mosaic',
+      data: { query: query },
+      success: (data) => {
+        console.log('success from loadmosaic');
+        // this.setState({
+        //   pics: data
+        // })
+      },
+      error: (err) => {
+        console.log('err', err);
+      }
+    });
+  }
 
   render () {
     return (<div>

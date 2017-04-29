@@ -3,7 +3,8 @@ var request = require('request-promise');
 var Picture = require('../database-mongo/index.js');
 
 class Helper {
-  constructor() {
+  constructor(data) {
+    this.data = data;
   }
   // async ?
   getPicturesFromApi (query) {
@@ -28,30 +29,51 @@ class Helper {
 
   }
 
-  writePicturesToDatabase (picData) {
+  writePicturesToDatabase (data, query) {
     console.log('hey from write picture to database');
 
-    return picData.forEach((datum) => {
-      Picture.collection.insert({
-        id: datum.id,
+    console.log('is array?: ', Array.isArray(JSON.parse(data)));
+
+    var picData = JSON.parse(data);
+
+    data.forEach((datum, index) => {
+      console.log(datum.id);
+      var counter = index;
+      counter = new Picture({
+        pic_id: datum.id,
         urls: datum.urls,
         username: datum.user.name,
-        userlink: datum.links.html
+        userlink: datum.links.html,
+        likes: datum.likes,
+        views: datum.views,
+        query: query
       })
+
+      counter.collection.insert( counter, (err, doc) => {
+        if (err);
+        console.log('SAVED TO DATABASE');
+      });
+
     })
     .then(() => {
-      console.log('hey from then');
-      return 1;
-    })
-    .error((err) => {
-      console.log(err);
+      // console.log('hey from then');
       return;
-    })
+    });
+    // .error((err) => {
+    //   console.log(err);
+    //   return;
+    // });
 
   }
 
-  getPicturesFromDatabase () {
+  getPicturesFromDatabase (query) {
     //get most recent 10 pictures from database
+    return db.find({
+      query: query
+    })
+    .limit(10)
+    .sort({ views: -1 });
+
   }
 
 }

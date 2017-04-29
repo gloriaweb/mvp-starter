@@ -12,22 +12,24 @@ db.once('open', function() {
 });
 
 var pictureSchema = mongoose.Schema({
-  id: {type: Number, unique: true},
+  pic_id: {type: String, unique: true},
   urls: String,
   username: String,
-  userlink: String
+  userlink: String,
+  likes: Number,
+  views: Number
 });
 
 var Picture = mongoose.model('Picture', pictureSchema);
 
-var selectAll = function(callback) {
-  Picture.find({}, function(err, pics) {
-    if(err) {
-      callback(err, null);
-    } else {
-      callback(null, pics);
-    }
-  });
-};
+// var selectAll = function(callback) {
+//   Picture.find({}, function(err, pics) {
+//     if(err) {
+//       callback(err, null);
+//     } else {
+//       callback(null, pics);
+//     }
+//   });
+// };
 
 module.exports = Picture;

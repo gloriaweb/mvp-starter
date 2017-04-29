@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var Helper = require('../worker/index.js');
 var fs = Promise.promisifyAll(require('fs'));
 var worker = new Helper();
-// var db = require('../database-mongo');
+var db = require('../database-mongo');
 
 var app = express();
 
@@ -36,10 +36,7 @@ app.post('/query', function (req, res) {
   // return worker.getPicturesFromApi(query)
   return fs.readFileAsync(__dirname + '/../data.json', 'utf8')
     .then((data) => {
-      return worker.writePicturesToDatabase(JSON.parse(data))
-        .then(() => {
-          res.end();
-        })
+      return worker.writePicturesToDatabase(data, query)
     })
     .then(() => {
       res.end();
@@ -52,13 +49,10 @@ app.post('/query', function (req, res) {
 // on get mosaic, query database for most recent query and serve to client
 
 app.get('/mosaic', function (req, res) {
-  items.selectAll(function(err, data) {
-    if(err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
-    }
-  });
+  return worker.getPicturesFromDatabase(req.body.query)
+    .then((data) => {
+      res.send(data);
+    })
 });
 
 app.listen(3000, function() {
