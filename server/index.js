@@ -1,18 +1,20 @@
-var Promise = require('bluebird');
 var express = require('express');
-var bodyParser = require('body-parser');
-var Helper = require('../worker/index.js');
+var Promise = require('bluebird');
 var fs = Promise.promisifyAll(require('fs'));
-var worker = new Helper();
+var request = require('request-promise');
+var bodyParser = require('body-parser');
 var db = require('../database-mongo');
+var Helper = require('../worker/index.js');
+var worker = new Helper();
 
 var app = express();
+
+app.use(express.static(__dirname + '/../react-client/dist'));
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
-app.use(express.static(__dirname + '/../react-client/dist'));
 
 // on load make mosaic of random pictures
 
@@ -31,24 +33,34 @@ app.use(express.static(__dirname + '/../react-client/dist'));
 
 app.post('/query', function (req, res) {
   var query = req.body.query;
-  console.log('hey from query server');
+  console.log('QUERY RECEIVED: ', query);
   // console.log(worker.getPicturesFromApi(query));
-  // return worker.getPicturesFromApi(query)
-  return fs.readFileAsync(__dirname + '/../data.json', 'utf8')
+  // return fs.readFileAsync(__dirname + '/../data.json', 'utf8')
+  // debugger;
+  return worker.getPicturesFromApi(query)
     .then((data) => {
+      // console.log(data);
+      // console.log('TYPEOF: ', typeof data);
+      // res.end(data);
       return worker.writePicturesToDatabase(data, query)
     })
     .then(() => {
       res.end();
     })
-    .error((err) => {
-      res.end(err);
-    });
+    // .error((err) => {
+    //   res.end(err);
+    // })
+    .catch(() => {
+      res.end();
+    })
 });
 
 // on get mosaic, query database for most recent query and serve to client
 
 app.get('/mosaic', function (req, res) {
+
+  console.log(req.body.query);
+
   return worker.getPicturesFromDatabase(req.body.query)
     .then((data) => {
       res.send(data);

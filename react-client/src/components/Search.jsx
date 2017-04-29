@@ -23,7 +23,6 @@ class Search extends React.Component {
 
   render () {
     return (<div>
-      <h4> Search Component </h4>
       Search: <input type="text" onChange={this.handleChange}></input>
       <button type="submit" onClick={this.search}>Submit</button>
       </div>)

@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-
+    this.loadMosaic();
   }
 
   // loadRandom() {
@@ -39,9 +39,9 @@ class App extends React.Component {
       url: '/query', 
       data: { query: query },
       success: (data) => {
-        console.log('success from search ajax!');
+        console.log('success from SEARCH ajax!');
         this.setState({
-          pics: JSON.parse(data)
+          pics: data
         });
       },
       error: (err) => {
@@ -55,16 +55,17 @@ class App extends React.Component {
 
   }
 
-  loadMosaic(query) {
+  loadMosaic() {
     $.ajax({
       method: 'get',
       url: '/mosaic',
-      data: { query: query },
+      // data: { query: query },
       success: (data) => {
         console.log('success from loadmosaic');
-        // this.setState({
-        //   pics: data
-        // })
+        this.setState({
+          pics: data
+        })
+        console.log(this.state.pics);
       },
       error: (err) => {
         console.log('err', err);

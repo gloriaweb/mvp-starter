@@ -1,3 +1,4 @@
+var Promise = require('bluebird');
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/unsplash');
 
@@ -13,7 +14,8 @@ db.once('open', function() {
 
 var pictureSchema = mongoose.Schema({
   pic_id: {type: String, unique: true},
-  urls: String,
+  regular: String,
+  small: String,
   username: String,
   userlink: String,
   likes: Number,
