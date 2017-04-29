@@ -19,7 +19,8 @@ var pictureSchema = mongoose.Schema({
   username: String,
   userlink: String,
   likes: Number,
-  views: Number
+  views: Number,
+  query: String
 });
 
 var Picture = mongoose.model('Picture', pictureSchema);

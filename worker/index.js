@@ -30,6 +30,9 @@ class Helper {
   }
 
   writePicturesToDatabase (data, query) {
+
+    var write = new Promise ((res, rej) => {
+
     console.log('hey from write picture to database');
 
     // console.log('is array?: ', Array.isArraydata);
@@ -38,8 +41,7 @@ class Helper {
 
     // var picData = JSON.parse(data);
 
-    picData.forEach((datum, index) => {
-      console.log(datum.urls.regular);
+    data.forEach((datum, index) => {
       var counter = index;
       counter = new Picture({
         pic_id: datum.id,
@@ -58,15 +60,15 @@ class Helper {
       });
 
     })
-    .then(() => {
-      // console.log('hey from then');
-      return;
-    });
     // .error((err) => {
     //   console.log(err);
     //   return;
     // });
-
+    .then(() => {
+      // console.log('hey from then');
+      resolve();
+    });
+  });
   }
 
   getPicturesFromDatabase (query) {
