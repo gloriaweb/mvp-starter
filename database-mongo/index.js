@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://localhost/unsplash');
 
 var db = mongoose.connection;
 
@@ -12,8 +12,10 @@ db.once('open', function() {
 });
 
 var pictureSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+  id: {type: Number, unique: true},
+  urls: String,
+  username: String,
+  userlink: String
 });
 
 var Picture = mongoose.model('Picture', pictureSchema);
@@ -28,7 +30,4 @@ var selectAll = function(callback) {
   });
 };
 
-module.exports = {
-  Picture: Picture,
-  selectAll: selectAll
-}
+module.exports = Picture;

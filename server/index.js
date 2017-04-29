@@ -1,8 +1,9 @@
 var Promise = require('bluebird');
 var express = require('express');
 var bodyParser = require('body-parser');
-var helper = require('../worker/index.js');
-var worker = new helper();
+var Helper = require('../worker/index.js');
+var fs = Promise.promisifyAll(require('fs'));
+var worker = new Helper();
 // var db = require('../database-mongo');
 
 var app = express();
@@ -30,10 +31,21 @@ app.use(express.static(__dirname + '/../react-client/dist'));
 
 app.post('/query', function (req, res) {
   var query = req.body.query;
-  console.log('hey from query server', query);
-  Promise.resolve(worker.getPicturesFromApi(query))
+  console.log('hey from query server');
+  // console.log(worker.getPicturesFromApi(query));
+  // return worker.getPicturesFromApi(query)
+  return fs.readFileAsync(__dirname + '/../data.json', 'utf8')
     .then((data) => {
+      return worker.writePicturesToDatabase(JSON.parse(data))
+        .then(() => {
+          res.end();
+        })
+    })
+    .then(() => {
       res.end();
+    })
+    .error((err) => {
+      res.end(err);
     });
 });
 

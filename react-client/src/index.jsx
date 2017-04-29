@@ -10,6 +10,7 @@ class App extends React.Component {
     this.state = { 
       pics: []
     }
+    this.search = this.search.bind(this);
   }
 
   componentDidMount() {
@@ -37,30 +38,34 @@ class App extends React.Component {
       url: '/query', 
       data: { query: query },
       success: (data) => {
-        // this.setState({
-        //   pics: data
-        // })
         console.log('success from search ajax!');
+        this.setState({
+          pics: JSON.parse(data)
+        });
       },
       error: (err) => {
         console.log('err', err);
       }
-    });
+    })
+    .then(() => {
+      console.log(this.state.pics);
+    })
+
   }
 
-  loadMosaic() {
-    $.ajax({
-      url: '/mosaic', 
-      success: (data) => {
-        this.setState({
-          pics: data
-        })
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
-  }
+  // loadMosaic() {
+  //   $.ajax({
+  //     url: '/mosaic', 
+  //     success: (data) => {
+  //       this.setState({
+  //         pics: data
+  //       })
+  //     },
+  //     error: (err) => {
+  //       console.log('err', err);
+  //     }
+  //   });
+  // }
 
   render () {
     return (<div>
