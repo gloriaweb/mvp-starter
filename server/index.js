@@ -28,42 +28,46 @@ app.use(bodyParser.json())
 //   });
 // });
 
-// on search send post request to unsplash api for pictures based on query
-// store picture objects in database
+app.get('/mosaic', function (req, res) {
+
+  var query = req.query.query;
+
+  console.log(query);
+
+  return worker.getPicturesFromDatabase(query)
+    .then((data) => {
+      console.log('RETURN SEND *********', data);
+      res.send(data);
+    })
+});
+
+app.get('/prev', function (req, res) {
+
+  return worker.getPreviousQueries()
+    .then((data) => {
+      console.log('hey from return send prev query', data);
+      res.send(data);
+    })
+});
 
 app.post('/query', function (req, res) {
   var query = req.body.query;
   console.log('QUERY RECEIVED: ', query);
-  // console.log(worker.getPicturesFromApi(query));
-  // return fs.readFileAsync(__dirname + '/../data.json', 'utf8')
-  // debugger;
   return worker.getPicturesFromApi(query)
     .then((data) => {
-      // console.log(data);
-      // console.log('TYPEOF: ', typeof data);
-      // res.end(data);
+      console.log('hey from right before write pictures to database');
       return worker.writePicturesToDatabase(data, query)
     })
-    .then(() => {
-      res.end();
+    .then((bool) => {
+      if (bool) {
+        res.end('success');
+      }
     })
-    // .error((err) => {
-    //   res.end(err);
-    // })
+    .error((err) => {
+      res.end(err);
+    })
     .catch(() => {
       res.end();
-    })
-});
-
-// on get mosaic, query database for most recent query and serve to client
-
-app.get('/mosaic', function (req, res) {
-
-  console.log(req.body.query);
-
-  return worker.getPicturesFromDatabase(req.body.query)
-    .then((data) => {
-      res.send(data);
     })
 });
 

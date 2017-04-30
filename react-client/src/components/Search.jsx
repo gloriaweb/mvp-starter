@@ -8,6 +8,8 @@ class Search extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.search = this.search.bind(this);
+    this.clear = this.clear.bind(this);
+    this.random = this.random.bind(this);
   }
 
   handleChange(e) {
@@ -17,14 +19,23 @@ class Search extends React.Component {
   }
 
   search() {
-    // console.log(this.state.query);
     this.props.onSearch(this.state.query);
+  }
+
+  clear() {
+    this.props.onClear();
+  }
+
+  random() {
+    this.props.onRandom();
   }
 
   render () {
     return (<div>
-      Search: <input type="text" onChange={this.handleChange}></input>
+      Make New Wall: <input type="text" onChange={this.handleChange}></input>
       <button type="submit" onClick={this.search}>Submit</button>
+      <button type="submit" onClick={this.clear}>Clear Mosaic</button>
+      <button type="submit" onClick={this.random}>Randomize</button>
       </div>)
   }
 }

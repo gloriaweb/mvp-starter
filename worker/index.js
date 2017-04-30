@@ -1,11 +1,12 @@
 var rp = require('request-promise');
 var Picture = require('../database-mongo/index.js');
+var _ = require('underscore');
 
 class Helper {
   constructor(data) {
     this.data = data;
   }
-  // async ?
+
   getPicturesFromApi (query) {
       console.log('hey from helper function');
 
@@ -17,70 +18,87 @@ class Helper {
         json: true
       })
       .then((picData) => {
-        console.log('hey from successful API request');
-        console.log(typeof picData);
-        // console.log(picData);
         return picData;
       })
       .error((err) => {
         return err;
       });
-  // });
-
   }
 
   writePicturesToDatabase (data, query) {
 
-    var write = new Promise ((res, rej) => {
+    return new Promise ((res, rej) => {
 
-    console.log('hey from write picture to database');
+    console.log('hey from write pictures to database');
 
-    // console.log('is array?: ', Array.isArraydata);
+    console.log('is data an array:', Array.isArray(data));
 
-    // console.log('is array?: ', JSON.parse(data));
+      data.forEach((datum, index) => {
+        var counter = index;
 
-    // var picData = JSON.parse(data);
-
-    data.forEach((datum, index) => {
-      var counter = index;
-      counter = new Picture({
-        pic_id: datum.id,
-        regular: datum.urls.regular,
-        small: datum.urls.small,
-        username: datum.user.name,
-        userlink: datum.links.html,
-        likes: datum.likes,
-        views: datum.views,
-        query: query
-      });
+        counter = new Picture({
+          pic_id: datum.id,
+          regular: datum.urls.regular,
+          small: datum.urls.small,
+          username: datum.user.name,
+          userlink: datum.links.html,
+          likes: datum.likes,
+          views: datum.views,
+          query: query
+        });
 
       counter.collection.insert( counter, (err, doc) => {
         if (err);
-        console.log('SAVED TO DATABASE');
-      });
-
+          console.log('SAVED TO DATABASE');
+        });
+      })
+      res(true);
     })
-    // .error((err) => {
-    //   console.log(err);
-    //   return;
-    // });
-    .then(() => {
-      // console.log('hey from then');
-      resolve();
-    });
-  });
+  }
+
+  getPreviousQueries () {
+    return new Promise ((resolve, reject) => {
+      console.log('hey from previous queries in database worker');
+        Picture.find({
+        })
+        .exec((err, data) => {
+          if (err) {
+            reject(err)
+          }
+          else {
+            var prevQueries = [];
+            data.forEach((datum) => {
+            prevQueries.push(datum.query);
+          })
+            resolve(_.uniq(prevQueries));
+          }
+        })
+    })
   }
 
   getPicturesFromDatabase (query) {
-    //get most recent 10 pictures from database
-    return Picture.find({
+    return new Promise ((resolve, reject) => {
+      if (query === '') {
+        Picture.aggregate(
+          [ { $sample: { size: 5 } } ]
+        )
+        .exec((err, data) => {
+          if (err) {reject(err)}
+          else resolve(data);
+        })
+      } else {
+    Picture.find({
       query: query
     })
-    .limit(10)
-    .sort({ views: -1 });
-
-  }
-
+    .limit(5)
+    .sort({ views: 1 })
+    .exec((err, data) => {
+      if (err) {reject(err)}
+      else 
+        console.log('requested data: ', typeof data);
+        resolve(data);
+    })}
+  })}
 }
 
 module.exports = Helper;
