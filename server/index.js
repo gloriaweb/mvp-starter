@@ -36,7 +36,7 @@ app.get('/mosaic', function (req, res) {
 
   return worker.getPicturesFromDatabase(query)
     .then((data) => {
-      console.log('RETURN SEND *********', data);
+      console.log('RETURN SEND *********');
       res.send(data);
     })
 });
@@ -45,7 +45,7 @@ app.get('/prev', function (req, res) {
 
   return worker.getPreviousQueries()
     .then((data) => {
-      console.log('hey from return send prev query', data);
+      console.log('hey from return send prev query');
       res.send(data);
     })
 });
@@ -55,7 +55,6 @@ app.post('/query', function (req, res) {
   console.log('QUERY RECEIVED: ', query);
   return worker.getPicturesFromApi(query)
     .then((data) => {
-      console.log('hey from right before write pictures to database');
       return worker.writePicturesToDatabase(data, query)
     })
     .then((bool) => {

@@ -21,7 +21,7 @@
   justify-content: space-between;
 }
 .flex-grid-thirds .col {
-  width: 22%;
+  width: 17%;
 }
 .floattext {
   float: right;
@@ -30,4 +30,10 @@
 .footer {
   margin: 10px;
   float: right;
+}
+.bold-select {
+  background-color: gold;
+}
+.regular-font {
+  font-weight: normal;
 }

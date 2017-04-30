@@ -9,7 +9,6 @@ class Helper {
 
   getPicturesFromApi (query) {
       console.log('hey from helper function');
-
       return rp({
         url: `https://api.unsplash.com/photos/random?query=${query}&count=10`,
         headers: {
@@ -91,7 +90,7 @@ class Helper {
       query: query
     })
     .limit(5)
-    .sort({ views: 1 })
+    .sort({ views: -1 })
     .exec((err, data) => {
       if (err) {reject(err)}
       else 

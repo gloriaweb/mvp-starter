@@ -20,6 +20,9 @@ class Search extends React.Component {
 
   search() {
     this.props.onSearch(this.state.query);
+    this.setState({
+      query: ''
+    });
   }
 
   clear() {
@@ -30,9 +33,13 @@ class Search extends React.Component {
     this.props.onRandom();
   }
 
+  resetButton() {
+
+  }
+
   render () {
     return (<div>
-      Make New Wall: <input type="text" onChange={this.handleChange}></input>
+      Make New Wall: <input type="text" value={this.state.query} onChange={this.handleChange}></input>
       <button type="submit" onClick={this.search}>Submit</button>
       <button type="submit" onClick={this.clear}>Clear Mosaic</button>
       <button type="submit" onClick={this.random}>Randomize</button>

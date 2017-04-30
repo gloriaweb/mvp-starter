@@ -23,19 +23,16 @@ class App extends React.Component {
 
   componentWillMount() {
     this.prevQueries();
-    if (!this.didRandom) {
-      this.loadRandom();
-      this.didRandom = true;
-    } else {
-      this.loadMosaic(this.state.mostRecentQuery);
-      console.log('current pics: ', this.state.pics);
-    }
+    // if (!this.didRandom) {
+    //   this.loadRandom();
+    //   this.didRandom = true;
+    // } else {
+    // }
   }
 
-  // componentDidMount() {
-  //   this.loadMosaic(this.state.mostRecentQuery);
-  //   this.prevQueries();
-  // }
+  focusSingle() {
+    //when image is clicked load only that image into the view
+  }
 
   loadRandom() {
     $.ajax({
@@ -43,7 +40,6 @@ class App extends React.Component {
       url: '/mosaic',
       data: { query: '' },
       success: (data) => {
-        console.log('success from loadmosaic');
         this.setState({
           pics: data
         })
@@ -59,11 +55,9 @@ class App extends React.Component {
       method: 'get',
       url: '/prev',
       success: (data) => {
-        console.log('success from loadprevious');
         this.setState({
           prevQueries: data
         })
-        console.log(this.state.prevQueries);
       },
       error: (err) => {
         console.log('err', err);
@@ -71,24 +65,38 @@ class App extends React.Component {
     });
   }
 
-  search(query) {
-    console.log('hey from search index', query);
-    $.ajax({
-      method: 'post',
-      url: '/query', 
-      data: { query: query },
-      success: (data) => {
-        console.log('success from SEARCH ajax!');
-        this.setState({
-          mostRecentQuery: query
-        })
-        this.loadMosaic(query);
-      },
-      error: (err) => {
-        console.log('err', err);
+  wasSearched(query) {
+    var prev = this.state.prevQueries;
+    var result = false;
+    prev.forEach((q) => {
+      if (query === q) {
+        result = true;
       }
     })
+    return result;
+  }
 
+  search(query) {
+    if (this.wasSearched(query)) {
+      this.loadMosaic(query)
+    } else {
+      $.ajax({
+        method: 'post',
+        url: '/query', 
+        data: { query: query },
+        success: (data) => {
+          this.setState({
+            mostRecentQuery: query
+          })
+          this.prevQueries();
+          this.loadMosaic(query);
+        },
+        error: (err) => {
+          console.log('err', err);
+        }
+      })
+
+    }
   }
 
   loadMosaic(query) {
@@ -97,11 +105,9 @@ class App extends React.Component {
       url: '/mosaic',
       data: { query: query },
       success: (data) => {
-        console.log('success from loadmosaic');
         this.setState({
           pics: data
         })
-        console.log(this.state.pics);
       },
       error: (err) => {
         console.log('err', err);
