@@ -6,7 +6,6 @@ constructor(props) {
   super(props);
   this.state = {
     defClass: 'regular-font',
-    lastClicked: ''
   }
   this.click = this.click.bind(this);
 }
